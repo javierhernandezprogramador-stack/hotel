@@ -1,6 +1,8 @@
 package org.jadez.apiservlet.webapp.hotel.repositories;
 
-import org.jadez.apiservlet.webapp.hotel.models.Habitacion;
+import jakarta.inject.Inject;
+import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
+import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.models.Servicio;
 import org.jadez.apiservlet.webapp.hotel.models.TipoServicio;
 
@@ -8,10 +10,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServicioRepositoryImpl implements Repository<Servicio> {
+@Repository
+public class ServicioCrudRepositoryImpl implements crudRepository<Servicio> {
     private Connection conn;
 
-    public ServicioRepositoryImpl(Connection conn) {
+    @Inject
+    public ServicioCrudRepositoryImpl(@MysqlConn Connection conn) {
         this.conn = conn;
     }
 

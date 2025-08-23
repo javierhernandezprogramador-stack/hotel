@@ -1,8 +1,7 @@
 package org.jadez.apiservlet.webapp.hotel.services;
 
-import java.sql.SQLException;
 import java.util.List;
 
-public interface ServiceHabitacion<T> extends Service {
+public interface crudServiceHabitacion<T> extends crudService {
     T crear(T t, List<T> lista);
 }

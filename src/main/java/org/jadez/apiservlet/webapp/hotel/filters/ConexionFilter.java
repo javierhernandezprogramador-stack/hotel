@@ -3,7 +3,6 @@ package org.jadez.apiservlet.webapp.hotel.filters;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletResponse;
-import org.jadez.apiservlet.webapp.hotel.utils.ConexionBaseDatos;
 
 import java.io.IOException;
 import java.sql.Connection;

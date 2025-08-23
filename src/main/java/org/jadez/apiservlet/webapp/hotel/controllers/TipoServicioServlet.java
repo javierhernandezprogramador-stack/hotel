@@ -5,15 +5,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.jadez.apiservlet.webapp.hotel.models.TipoHabitacion;
 import org.jadez.apiservlet.webapp.hotel.models.TipoServicio;
-import org.jadez.apiservlet.webapp.hotel.services.Service;
-import org.jadez.apiservlet.webapp.hotel.services.TipoHabitacionServiceImpl;
-import org.jadez.apiservlet.webapp.hotel.services.TipoServicioServiceImpl;
+import org.jadez.apiservlet.webapp.hotel.services.crudService;
+import org.jadez.apiservlet.webapp.hotel.services.TipoServicioCrudServiceImpl;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.List;
 import java.util.Optional;
 
 @WebServlet("/tipoServicio")
@@ -21,15 +18,15 @@ public class TipoServicioServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = (Connection) req.getAttribute("conn");
-        Service<TipoServicio> service = new TipoServicioServiceImpl(conn);
-        req.setAttribute("tipoServicios", service.listar());
+        crudService<TipoServicio> crudService = new TipoServicioCrudServiceImpl(conn);
+        req.setAttribute("tipoServicios", crudService.listar());
         getServletContext().getRequestDispatcher("/TipoServicio/index.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = (Connection) req.getAttribute("conn");
-        Service<TipoServicio> service = new TipoServicioServiceImpl(conn);
+        crudService<TipoServicio> crudService = new TipoServicioCrudServiceImpl(conn);
 
         String accion = req.getParameter("accion");
 
@@ -43,14 +40,14 @@ public class TipoServicioServlet extends HttpServlet {
         //acciones
         switch (accion != null ? accion : "") {
             case "cambiar":
-                cambiarTipoServicio(service, id, estado, req, resp);
+                cambiarTipoServicio(crudService, id, estado, req, resp);
                 break;
             case "buscar":
-                buscarTipoServicio(service, id, req, resp);
+                buscarTipoServicio(crudService, id, req, resp);
                 break;
             case "crear":
             case "modificar":
-                service.crear(tipoServicio);
+                crudService.crear(tipoServicio);
                 resp.sendRedirect(req.getContextPath() + "/tipoServicio");
                 break;
             default:
@@ -76,18 +73,18 @@ public class TipoServicioServlet extends HttpServlet {
         return tipoServicio;
     }
 
-    private void cambiarTipoServicio(Service<TipoServicio> service, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Optional<TipoServicio> optional = service.porId(id);
+    private void cambiarTipoServicio(crudService<TipoServicio> crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Optional<TipoServicio> optional = crudService.porId(id);
         if (optional.isPresent()) {
-            service.updateEstado(id, estado);
+            crudService.updateEstado(id, estado);
             resp.sendRedirect(req.getContextPath() + "/tipoServicio");
         } else {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "No existe el tipo de servicio a cambiar estado");
         }
     }
 
-    private void buscarTipoServicio(Service<TipoServicio> service, Long id, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        Optional<TipoServicio> optional = service.porId(id);
+    private void buscarTipoServicio(crudService<TipoServicio> crudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        Optional<TipoServicio> optional = crudService.porId(id);
         if (optional.isPresent()) {
             req.setAttribute("tipoServicio", optional.get());
             getServletContext().getRequestDispatcher("/TipoServicio/editar.jsp").forward(req, resp);

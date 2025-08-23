@@ -1,16 +1,13 @@
 package org.jadez.apiservlet.webapp.hotel.controllers;
 
-import com.mysql.cj.xdevapi.Client;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jadez.apiservlet.webapp.hotel.models.*;
-import org.jadez.apiservlet.webapp.hotel.services.ClienteServiceImpl;
-import org.jadez.apiservlet.webapp.hotel.services.Service;
-import org.jadez.apiservlet.webapp.hotel.services.ServicioServiceImpl;
-import org.jadez.apiservlet.webapp.hotel.services.TipoServicioServiceImpl;
+import org.jadez.apiservlet.webapp.hotel.services.ClienteCrudServiceImpl;
+import org.jadez.apiservlet.webapp.hotel.services.crudService;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -22,15 +19,15 @@ public class ClienteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = (Connection) req.getAttribute("conn");
-        Service<Cliente> service = new ClienteServiceImpl(conn);
-        req.setAttribute("clientes", service.listar());
+        crudService<Cliente> crudService = new ClienteCrudServiceImpl(conn);
+        req.setAttribute("clientes", crudService.listar());
         getServletContext().getRequestDispatcher("/Cliente/index.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = (Connection) req.getAttribute("conn");
-        Service<Cliente> service = new ClienteServiceImpl(conn);
+        crudService<Cliente> crudService = new ClienteCrudServiceImpl(conn);
 
         String accion = req.getParameter("accion");
         
@@ -57,11 +54,11 @@ public class ClienteServlet extends HttpServlet {
                 //cambiarEstado(service, id, estado, req, resp);
                 break;
             case "buscar":
-                buscarCliente(service, id, req, resp);
+                buscarCliente(crudService, id, req, resp);
                 break;
             case "crear":
             case "modificar":
-                service.crear(cliente);
+                crudService.crear(cliente);
                 resp.sendRedirect(req.getContextPath() + "/cliente");
                 break;
             default:
@@ -108,18 +105,18 @@ public class ClienteServlet extends HttpServlet {
         return cliente;
     }
 
-    private void cambiarEstado(Service<Servicio> service, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Optional<Servicio> optional = service.porId(id);
+    private void cambiarEstado(crudService<Servicio> crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Optional<Servicio> optional = crudService.porId(id);
         if (optional.isPresent()) {
-            service.updateEstado(id, estado);
+            crudService.updateEstado(id, estado);
             resp.sendRedirect(req.getContextPath() + "/servicio");
         } else {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "No existe el servicio a cambiar estado");
         }
     }
 
-    private void buscarCliente(Service<Cliente> clienteService, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-        Optional<Cliente> optional = clienteService.porId(id);
+    private void buscarCliente(crudService<Cliente> clienteCrudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        Optional<Cliente> optional = clienteCrudService.porId(id);
 
         if (optional.isPresent()) {
             req.setAttribute("cliente", optional.get());

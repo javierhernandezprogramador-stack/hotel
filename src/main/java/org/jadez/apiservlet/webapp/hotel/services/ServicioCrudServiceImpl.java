@@ -1,25 +1,26 @@
 package org.jadez.apiservlet.webapp.hotel.services;
 
+import jakarta.inject.Inject;
+import org.jadez.apiservlet.webapp.hotel.config.Service;
 import org.jadez.apiservlet.webapp.hotel.models.Servicio;
-import org.jadez.apiservlet.webapp.hotel.repositories.Repository;
-import org.jadez.apiservlet.webapp.hotel.repositories.ServicioRepositoryImpl;
+import org.jadez.apiservlet.webapp.hotel.repositories.crudRepository;
+import org.jadez.apiservlet.webapp.hotel.repositories.ServicioCrudRepositoryImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class ServicioServiceImpl implements Service<Servicio>{
-    private Repository<Servicio> repository;
+@Service
+public class ServicioCrudServiceImpl implements crudService<Servicio> {
 
-    public ServicioServiceImpl(Connection conn) {
-        repository = new ServicioRepositoryImpl(conn);
-    }
+    @Inject
+    private crudRepository<Servicio> crudRepository;
 
     @Override
     public List<Servicio> listar() {
         try {
-            return repository.listar();
+            return crudRepository.listar();
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -28,7 +29,7 @@ public class ServicioServiceImpl implements Service<Servicio>{
     @Override
     public Servicio crear(Servicio servicio) {
         try {
-            return repository.crear(servicio);
+            return crudRepository.crear(servicio);
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -37,7 +38,7 @@ public class ServicioServiceImpl implements Service<Servicio>{
     @Override
     public Optional<Servicio> porId(Long id) {
         try {
-            return Optional.ofNullable(repository.porId(id));
+            return Optional.ofNullable(crudRepository.porId(id));
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -46,7 +47,7 @@ public class ServicioServiceImpl implements Service<Servicio>{
     @Override
     public void updateEstado(Long id, Long estado) {
         try {
-            repository.updateEstado(id, estado);
+            crudRepository.updateEstado(id, estado);
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }

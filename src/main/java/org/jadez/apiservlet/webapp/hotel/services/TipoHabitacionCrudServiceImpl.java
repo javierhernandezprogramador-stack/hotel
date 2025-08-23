@@ -1,25 +1,26 @@
 package org.jadez.apiservlet.webapp.hotel.services;
 
+import jakarta.inject.Inject;
+import org.jadez.apiservlet.webapp.hotel.config.Service;
 import org.jadez.apiservlet.webapp.hotel.models.TipoHabitacion;
-import org.jadez.apiservlet.webapp.hotel.repositories.Repository;
-import org.jadez.apiservlet.webapp.hotel.repositories.TipoHabitacionRepositoryImpl;
+import org.jadez.apiservlet.webapp.hotel.repositories.crudRepository;
+import org.jadez.apiservlet.webapp.hotel.repositories.TipoHabitacionCrudRepositoryImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class TipoHabitacionServiceImpl implements Service<TipoHabitacion>{
-    private Repository<TipoHabitacion> repository;
+@Service
+public class TipoHabitacionCrudServiceImpl implements crudService<TipoHabitacion> {
 
-    public TipoHabitacionServiceImpl(Connection conn) {
-        this.repository = new TipoHabitacionRepositoryImpl(conn);
-    }
+    @Inject
+    private crudRepository<TipoHabitacion> crudRepository;
 
     @Override
     public List<TipoHabitacion> listar() {
         try {
-            return repository.listar();
+            return crudRepository.listar();
         }catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -28,7 +29,7 @@ public class TipoHabitacionServiceImpl implements Service<TipoHabitacion>{
     @Override
     public TipoHabitacion crear(TipoHabitacion tipoHabitacion) {
         try {
-            return repository.crear(tipoHabitacion);
+            return crudRepository.crear(tipoHabitacion);
         }catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -37,7 +38,7 @@ public class TipoHabitacionServiceImpl implements Service<TipoHabitacion>{
     @Override
     public Optional<TipoHabitacion> porId(Long id) {
         try {
-            return Optional.ofNullable(repository.porId(id));
+            return Optional.ofNullable(crudRepository.porId(id));
         }catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -46,7 +47,7 @@ public class TipoHabitacionServiceImpl implements Service<TipoHabitacion>{
     @Override
     public void updateEstado(Long id, Long estado) {
         try {
-            repository.updateEstado(id, estado);
+            crudRepository.updateEstado(id, estado);
         }catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }

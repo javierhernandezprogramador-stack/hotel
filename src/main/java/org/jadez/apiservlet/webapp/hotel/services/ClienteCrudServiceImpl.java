@@ -1,10 +1,12 @@
 package org.jadez.apiservlet.webapp.hotel.services;
 
+import jakarta.inject.Inject;
+import org.jadez.apiservlet.webapp.hotel.config.Service;
 import org.jadez.apiservlet.webapp.hotel.models.Cliente;
 import org.jadez.apiservlet.webapp.hotel.models.Usuario;
-import org.jadez.apiservlet.webapp.hotel.repositories.ClienteRepositoryImpl;
-import org.jadez.apiservlet.webapp.hotel.repositories.Repository;
-import org.jadez.apiservlet.webapp.hotel.repositories.RepositoryUsuario;
+import org.jadez.apiservlet.webapp.hotel.repositories.ClienteCrudRepositoryImpl;
+import org.jadez.apiservlet.webapp.hotel.repositories.crudRepository;
+import org.jadez.apiservlet.webapp.hotel.repositories.crudRepositoryUsuario;
 import org.jadez.apiservlet.webapp.hotel.repositories.UsuarioRepositoryimpl;
 
 import java.security.SecureRandom;
@@ -13,19 +15,19 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class ClienteServiceImpl implements Service<Cliente> {
-    private RepositoryUsuario repositoryUsuario;
-    private Repository<Cliente> repositoryCliente;
+@Service
+public class ClienteCrudServiceImpl implements crudService<Cliente> {
 
-    public ClienteServiceImpl(Connection conn) {
-        repositoryUsuario = new UsuarioRepositoryimpl(conn);
-        repositoryCliente = new ClienteRepositoryImpl(conn);
-    }
+    @Inject
+    private crudRepositoryUsuario repositoryUsuario;
+
+    @Inject
+    private crudRepository<Cliente> crudRepositoryCliente;
 
     @Override
     public List<Cliente> listar() {
         try {
-            return repositoryCliente.listar();
+            return crudRepositoryCliente.listar();
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -40,7 +42,7 @@ public class ClienteServiceImpl implements Service<Cliente> {
             Usuario usuario = repositoryUsuario.crear(cliente.getUsuario());
             cliente.setUsuario(usuario);
 
-            return repositoryCliente.crear(cliente);
+            return crudRepositoryCliente.crear(cliente);
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -49,7 +51,7 @@ public class ClienteServiceImpl implements Service<Cliente> {
     @Override
     public Optional<Cliente> porId(Long id) {
         try {
-            return Optional.ofNullable(repositoryCliente.porId(id));
+            return Optional.ofNullable(crudRepositoryCliente.porId(id));
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -58,7 +60,7 @@ public class ClienteServiceImpl implements Service<Cliente> {
     @Override
     public void updateEstado(Long id, Long estado) {//aqui necesito mandar el objeto
         try {
-            repositoryCliente.updateEstado(id, estado);
+            crudRepositoryCliente.updateEstado(id, estado);
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }

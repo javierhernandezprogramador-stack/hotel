@@ -1,12 +1,14 @@
 package org.jadez.apiservlet.webapp.hotel.services;
 
+import jakarta.inject.Inject;
+import org.jadez.apiservlet.webapp.hotel.config.Service;
 import org.jadez.apiservlet.webapp.hotel.models.Habitacion;
 import org.jadez.apiservlet.webapp.hotel.models.HabitacionServicio;
 import org.jadez.apiservlet.webapp.hotel.models.Servicio;
-import org.jadez.apiservlet.webapp.hotel.repositories.HabitacionRepositoryImpl;
-import org.jadez.apiservlet.webapp.hotel.repositories.HabitacionServicioRepositoryImpl;
-import org.jadez.apiservlet.webapp.hotel.repositories.Repository;
-import org.jadez.apiservlet.webapp.hotel.repositories.RepositoryHabitacionServicio;
+import org.jadez.apiservlet.webapp.hotel.repositories.HabitacionCrudRepositoryImpl;
+import org.jadez.apiservlet.webapp.hotel.repositories.HabitacionServicioCrudRepositoryImpl;
+import org.jadez.apiservlet.webapp.hotel.repositories.crudRepository;
+import org.jadez.apiservlet.webapp.hotel.repositories.crudRepositoryHabitacionServicio;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -14,15 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class HabitacionServiceServiceImpl implements ServiceHabitacion {
-    private RepositoryHabitacionServicio habitacionServicioRepository;
-    private Repository<Habitacion> habitacionRepository;
+@Service
+public class HabitacionServiceCrudServiceImpl implements crudServiceHabitacion {
 
-    public HabitacionServiceServiceImpl(Connection conn) {
-        habitacionServicioRepository = new HabitacionServicioRepositoryImpl(conn);
-        habitacionRepository = new HabitacionRepositoryImpl(conn);
-    }
+    @Inject
+    private crudRepositoryHabitacionServicio habitacionServicioRepository;
 
+    @Inject
+    private crudRepository<Habitacion> habitacionCrudRepository;
 
     @Override
     public List listar() {
@@ -31,7 +32,7 @@ public class HabitacionServiceServiceImpl implements ServiceHabitacion {
         List<HabitacionServicio> habitacionServicios = new ArrayList<>();
 
         try {
-            habitaciones = habitacionRepository.listar();
+            habitaciones = habitacionCrudRepository.listar();
 
             for (Habitacion habitacion : habitaciones) {
                 servicios = habitacionServicioRepository.obtenerServicios(habitacion.getId());
@@ -53,7 +54,7 @@ public class HabitacionServiceServiceImpl implements ServiceHabitacion {
         Habitacion habitacion = (Habitacion) o;
 
         try {
-            return habitacionRepository.crear(habitacion);
+            return habitacionCrudRepository.crear(habitacion);
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -65,7 +66,7 @@ public class HabitacionServiceServiceImpl implements ServiceHabitacion {
         HabitacionServicio habitacionServicio = new HabitacionServicio();
 
         try {
-            Habitacion habitacion = habitacionRepository.porId(id);
+            Habitacion habitacion = habitacionCrudRepository.porId(id);
             servicios = habitacionServicioRepository.obtenerServiciosPorHabitacion(habitacion);
             habitacionServicio.setHabitacion(habitacion);
             habitacionServicio.setServicios(servicios);
@@ -78,7 +79,7 @@ public class HabitacionServiceServiceImpl implements ServiceHabitacion {
     @Override
     public void updateEstado(Long id, Long estado) {
         try {
-            habitacionRepository.updateEstado(id, estado);
+            habitacionCrudRepository.updateEstado(id, estado);
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }

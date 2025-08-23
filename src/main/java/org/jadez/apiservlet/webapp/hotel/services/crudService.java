@@ -1,10 +1,9 @@
 package org.jadez.apiservlet.webapp.hotel.services;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public interface Service <T> {
+public interface crudService<T> {
     List<T> listar();
 
     T crear(T t);

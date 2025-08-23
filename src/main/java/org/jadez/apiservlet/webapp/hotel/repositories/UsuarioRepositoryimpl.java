@@ -1,17 +1,21 @@
 package org.jadez.apiservlet.webapp.hotel.repositories;
 
+import jakarta.inject.Inject;
+import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
+import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.models.Rol;
-import org.jadez.apiservlet.webapp.hotel.models.TipoHabitacion;
 import org.jadez.apiservlet.webapp.hotel.models.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioRepositoryimpl implements RepositoryUsuario{
+@Repository
+public class UsuarioRepositoryimpl implements crudRepositoryUsuario {
     private Connection conn;
 
-    public UsuarioRepositoryimpl(Connection conn) {
+    @Inject
+    public UsuarioRepositoryimpl(@MysqlConn Connection conn) {
         this.conn = conn;
     }
 

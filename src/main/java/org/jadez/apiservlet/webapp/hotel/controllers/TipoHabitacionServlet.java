@@ -6,12 +6,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jadez.apiservlet.webapp.hotel.models.TipoHabitacion;
-import org.jadez.apiservlet.webapp.hotel.services.Service;
-import org.jadez.apiservlet.webapp.hotel.services.TipoHabitacionServiceImpl;
+import org.jadez.apiservlet.webapp.hotel.services.crudService;
+import org.jadez.apiservlet.webapp.hotel.services.TipoHabitacionCrudServiceImpl;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.List;
 import java.util.Optional;
 
 @WebServlet("/tipoHabitacion")
@@ -19,15 +18,15 @@ public class TipoHabitacionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = (Connection) req.getAttribute("conn");
-        Service<TipoHabitacion> service = new TipoHabitacionServiceImpl(conn);
-        req.setAttribute("tipoHabitaciones", service.listar());
+        crudService<TipoHabitacion> crudService = new TipoHabitacionCrudServiceImpl(conn);
+        req.setAttribute("tipoHabitaciones", crudService.listar());
         getServletContext().getRequestDispatcher("/TipoHabitacion/index.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = (Connection) req.getAttribute("conn");
-        Service<TipoHabitacion> service = new TipoHabitacionServiceImpl(conn);
+        crudService<TipoHabitacion> crudService = new TipoHabitacionCrudServiceImpl(conn);
 
         String accion = req.getParameter("accion");
 
@@ -40,14 +39,14 @@ public class TipoHabitacionServlet extends HttpServlet {
 
         switch (accion != null ? accion : "") {
             case "cambiar":
-                cambiarTipoHabitacion(service, id, estado, req, resp);
+                cambiarTipoHabitacion(crudService, id, estado, req, resp);
                 break;
             case "buscar":
-                buscarTipoHabitacion(service, id, req, resp);
+                buscarTipoHabitacion(crudService, id, req, resp);
                 break;
             case "crear":
             case "modificar":
-                service.crear(tipoHabitacion);
+                crudService.crear(tipoHabitacion);
                 resp.sendRedirect(req.getContextPath() + "/tipoHabitacion");
                 break;
             default:
@@ -72,18 +71,18 @@ public class TipoHabitacionServlet extends HttpServlet {
         return tipoHabitacion;
     }
 
-    private void cambiarTipoHabitacion(Service<TipoHabitacion> service, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Optional<TipoHabitacion> optional = service.porId(id);
+    private void cambiarTipoHabitacion(crudService<TipoHabitacion> crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Optional<TipoHabitacion> optional = crudService.porId(id);
         if (optional.isPresent()) {
-            service.updateEstado(id, estado);
+            crudService.updateEstado(id, estado);
             resp.sendRedirect(req.getContextPath() + "/tipoHabitacion");
         } else {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "No existe el tipo de habitación a cambiar estado");
         }
     }
 
-    private void buscarTipoHabitacion(Service<TipoHabitacion> service, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<TipoHabitacion> optional = service.porId(id);
+    private void buscarTipoHabitacion(crudService<TipoHabitacion> crudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Optional<TipoHabitacion> optional = crudService.porId(id);
         if (optional.isPresent()) {
             req.setAttribute("tipoHabitacion", optional.get());
             getServletContext().getRequestDispatcher("/TipoHabitacion/editar.jsp").forward(req, resp);

@@ -1,5 +1,8 @@
 package org.jadez.apiservlet.webapp.hotel.repositories;
 
+import jakarta.inject.Inject;
+import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
+import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.models.Habitacion;
 import org.jadez.apiservlet.webapp.hotel.models.TipoHabitacion;
 
@@ -7,10 +10,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HabitacionRepositoryImpl implements Repository<Habitacion> {
+@Repository
+public class HabitacionCrudRepositoryImpl implements crudRepository<Habitacion> {
     private Connection conn;
 
-    public HabitacionRepositoryImpl(Connection conn) {
+    @Inject
+    public HabitacionCrudRepositoryImpl(@MysqlConn Connection conn) {
         this.conn = conn;
     }
 

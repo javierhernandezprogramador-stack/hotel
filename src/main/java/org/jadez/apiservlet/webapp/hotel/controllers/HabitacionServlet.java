@@ -23,17 +23,17 @@ public class HabitacionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = (Connection) req.getAttribute("conn");
-        Service service = new HabitacionServiceServiceImpl(conn);
-        req.setAttribute("habitacionServicio", service.listar());
+        crudService crudService = new HabitacionServiceCrudServiceImpl(conn);
+        req.setAttribute("habitacionServicio", crudService.listar());
         getServletContext().getRequestDispatcher("/Habitacion/index.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection conn = (Connection) req.getAttribute("conn");
-        ServiceHabitacion service = new HabitacionServiceServiceImpl(conn);
-        Service<TipoHabitacion> tipoHabitacionService = new TipoHabitacionServiceImpl(conn);
-        Service<Servicio> servicioService = new ServicioServiceImpl(conn);
+        crudServiceHabitacion service = new HabitacionServiceCrudServiceImpl(conn);
+        crudService<TipoHabitacion> tipoHabitacionCrudService = new TipoHabitacionCrudServiceImpl(conn);
+        crudService<Servicio> servicioCrudService = new ServicioCrudServiceImpl(conn);
 
         String accion = req.getParameter("accion");
 
@@ -67,7 +67,7 @@ public class HabitacionServlet extends HttpServlet {
                 cambiarEstado(service, id, estado, req, resp);
                 break;
             case "buscar":
-                buscarHabitacion(service, servicioService, tipoHabitacionService, id, req, resp);
+                buscarHabitacion(service, servicioCrudService, tipoHabitacionCrudService, id, req, resp);
                 break;
             case "crear":
             case "modificar":
@@ -75,7 +75,7 @@ public class HabitacionServlet extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/habitacion");
                 break;
             case "cargar":
-                cargar(servicioService, tipoHabitacionService, req, resp);
+                cargar(servicioCrudService, tipoHabitacionCrudService, req, resp);
                 break;
             default:
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Error acción no especificada");
@@ -100,9 +100,9 @@ public class HabitacionServlet extends HttpServlet {
         return servicios;
     }
 
-    private void cargar(Service<Servicio> servicioService, Service<TipoHabitacion> tipoHabitacionService, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        req.setAttribute("tipos", tipoHabitacionService.listar());
-        req.setAttribute("servicios", servicioService.listar());
+    private void cargar(crudService<Servicio> servicioCrudService, crudService<TipoHabitacion> tipoHabitacionCrudService, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        req.setAttribute("tipos", tipoHabitacionCrudService.listar());
+        req.setAttribute("servicios", servicioCrudService.listar());
         getServletContext().getRequestDispatcher("/Habitacion/formulario.jsp").forward(req, resp);
     }
 
@@ -183,23 +183,23 @@ public class HabitacionServlet extends HttpServlet {
         return habitacion;
     }
 
-    private void cambiarEstado(Service service, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Optional<HabitacionServicio> optional = service.porId(id);
+    private void cambiarEstado(crudService crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Optional<HabitacionServicio> optional = crudService.porId(id);
         if (optional.isPresent()) {
-            service.updateEstado(id, estado);
+            crudService.updateEstado(id, estado);
             resp.sendRedirect(req.getContextPath() + "/habitacion");
         } else {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "No existe la habitacion a cambiar estado");
         }
     }
 
-    private void buscarHabitacion(ServiceHabitacion service, Service<Servicio> servicioService, Service<TipoHabitacion> tipoHabitacionService, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    private void buscarHabitacion(crudServiceHabitacion service, crudService<Servicio> servicioCrudService, crudService<TipoHabitacion> tipoHabitacionCrudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         Optional<HabitacionServicio> optional = service.porId(id);
 
         if (optional.isPresent()) {
             req.setAttribute("habitacionService", optional.get());
-            req.setAttribute("tipos", tipoHabitacionService.listar());
-            req.setAttribute("servicios", servicioService.listar());
+            req.setAttribute("tipos", tipoHabitacionCrudService.listar());
+            req.setAttribute("servicios", servicioCrudService.listar());
             getServletContext().getRequestDispatcher("/Habitacion/editar.jsp").forward(req, resp);
         } else {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "No existe la habitacion a buscar");
