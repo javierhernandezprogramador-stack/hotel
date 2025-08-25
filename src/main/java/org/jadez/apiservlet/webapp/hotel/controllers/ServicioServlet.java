@@ -1,5 +1,6 @@
 package org.jadez.apiservlet.webapp.hotel.controllers;
 
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,20 +18,21 @@ import java.util.Optional;
 
 @WebServlet("/servicio")
 public class ServicioServlet extends HttpServlet {
+
+    @Inject
+    private crudService<Servicio> serviceServicio;
+
+    @Inject
+    private crudService<TipoServicio> tipoServicioCrudService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        crudService<Servicio> crudService = new ServicioCrudServiceImpl(conn);
-        req.setAttribute("servicios", crudService.listar());
+        req.setAttribute("servicios", serviceServicio.listar());
         getServletContext().getRequestDispatcher("/Servicio/index.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        crudService<Servicio> crudService = new ServicioCrudServiceImpl(conn);
-        crudService<TipoServicio> tipoServicioCrudService = new TipoServicioCrudServiceImpl(conn);
-
         String accion = req.getParameter("accion");
         
         Long id = parseLong(req.getParameter("id"));
@@ -45,14 +47,14 @@ public class ServicioServlet extends HttpServlet {
 
         switch (accion != null ? accion : "") {
             case "cambiar":
-                cambiarEstado(crudService, id, estado, req, resp);
+                cambiarEstado(serviceServicio, id, estado, req, resp);
                 break;
             case "buscar":
-                buscarServicio(crudService, tipoServicioCrudService, id, req, resp);
+                buscarServicio(serviceServicio, tipoServicioCrudService, id, req, resp);
                 break;
             case "crear":
             case "modificar":
-                crudService.crear(servicio);
+                serviceServicio.crear(servicio);
                 resp.sendRedirect(req.getContextPath() + "/servicio");
                 break;
             case "cargar":

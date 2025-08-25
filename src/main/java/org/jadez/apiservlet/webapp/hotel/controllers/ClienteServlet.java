@@ -1,10 +1,12 @@
 package org.jadez.apiservlet.webapp.hotel.controllers;
 
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jadez.apiservlet.webapp.hotel.config.Service;
 import org.jadez.apiservlet.webapp.hotel.models.*;
 import org.jadez.apiservlet.webapp.hotel.services.ClienteCrudServiceImpl;
 import org.jadez.apiservlet.webapp.hotel.services.crudService;
@@ -16,19 +18,18 @@ import java.util.Optional;
 
 @WebServlet("/cliente")
 public class ClienteServlet extends HttpServlet {
+
+    @Inject
+    private crudService<Cliente> serviceCliente;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        crudService<Cliente> crudService = new ClienteCrudServiceImpl(conn);
-        req.setAttribute("clientes", crudService.listar());
+        req.setAttribute("clientes", serviceCliente.listar());
         getServletContext().getRequestDispatcher("/Cliente/index.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        crudService<Cliente> crudService = new ClienteCrudServiceImpl(conn);
-
         String accion = req.getParameter("accion");
         
         Long id = parseLong(req.getParameter("id"));
@@ -54,11 +55,11 @@ public class ClienteServlet extends HttpServlet {
                 //cambiarEstado(service, id, estado, req, resp);
                 break;
             case "buscar":
-                buscarCliente(crudService, id, req, resp);
+                buscarCliente(serviceCliente, id, req, resp);
                 break;
             case "crear":
             case "modificar":
-                crudService.crear(cliente);
+                serviceCliente.crear(cliente);
                 resp.sendRedirect(req.getContextPath() + "/cliente");
                 break;
             default:

@@ -2,6 +2,7 @@ package org.jadez.apiservlet.webapp.hotel.services;
 
 import jakarta.inject.Inject;
 import org.jadez.apiservlet.webapp.hotel.config.Service;
+import org.jadez.apiservlet.webapp.hotel.interceptors.Transactional;
 import org.jadez.apiservlet.webapp.hotel.models.Habitacion;
 import org.jadez.apiservlet.webapp.hotel.models.HabitacionServicio;
 import org.jadez.apiservlet.webapp.hotel.models.Servicio;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class HabitacionServiceCrudServiceImpl implements crudServiceHabitacion {
 
     @Inject

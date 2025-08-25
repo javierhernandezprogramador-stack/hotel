@@ -1,5 +1,6 @@
 package org.jadez.apiservlet.webapp.hotel.controllers;
 
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,19 +16,18 @@ import java.util.Optional;
 
 @WebServlet("/tipoHabitacion")
 public class TipoHabitacionServlet extends HttpServlet {
+
+    @Inject
+    crudService<TipoHabitacion> serviceTipoHabitacion;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        crudService<TipoHabitacion> crudService = new TipoHabitacionCrudServiceImpl(conn);
-        req.setAttribute("tipoHabitaciones", crudService.listar());
+        req.setAttribute("tipoHabitaciones", serviceTipoHabitacion.listar());
         getServletContext().getRequestDispatcher("/TipoHabitacion/index.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        crudService<TipoHabitacion> crudService = new TipoHabitacionCrudServiceImpl(conn);
-
         String accion = req.getParameter("accion");
 
         Long id = parseLong(req.getParameter("id"));
@@ -39,14 +39,14 @@ public class TipoHabitacionServlet extends HttpServlet {
 
         switch (accion != null ? accion : "") {
             case "cambiar":
-                cambiarTipoHabitacion(crudService, id, estado, req, resp);
+                cambiarTipoHabitacion(serviceTipoHabitacion, id, estado, req, resp);
                 break;
             case "buscar":
-                buscarTipoHabitacion(crudService, id, req, resp);
+                buscarTipoHabitacion(serviceTipoHabitacion, id, req, resp);
                 break;
             case "crear":
             case "modificar":
-                crudService.crear(tipoHabitacion);
+                serviceTipoHabitacion.crear(tipoHabitacion);
                 resp.sendRedirect(req.getContextPath() + "/tipoHabitacion");
                 break;
             default:

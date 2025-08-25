@@ -1,5 +1,6 @@
 package org.jadez.apiservlet.webapp.hotel.controllers;
 
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,21 +21,24 @@ import java.util.UUID;
 @WebServlet("/habitacion")
 @MultipartConfig
 public class HabitacionServlet extends HttpServlet {
+
+    @Inject
+    private crudServiceHabitacion serviceHabitacion;
+
+    @Inject
+    private crudService<TipoHabitacion> tipoHabitacionCrudService;
+
+    @Inject
+    private crudService<Servicio> serviceServicio;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        crudService crudService = new HabitacionServiceCrudServiceImpl(conn);
-        req.setAttribute("habitacionServicio", crudService.listar());
+        req.setAttribute("habitacionServicio", serviceHabitacion.listar());
         getServletContext().getRequestDispatcher("/Habitacion/index.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        crudServiceHabitacion service = new HabitacionServiceCrudServiceImpl(conn);
-        crudService<TipoHabitacion> tipoHabitacionCrudService = new TipoHabitacionCrudServiceImpl(conn);
-        crudService<Servicio> servicioCrudService = new ServicioCrudServiceImpl(conn);
-
         String accion = req.getParameter("accion");
 
         Long id = parseLong(req.getParameter("id"));
@@ -64,18 +68,18 @@ public class HabitacionServlet extends HttpServlet {
 
         switch (accion != null ? accion : "") {
             case "cambiar":
-                cambiarEstado(service, id, estado, req, resp);
+                cambiarEstado(serviceHabitacion, id, estado, req, resp);
                 break;
             case "buscar":
-                buscarHabitacion(service, servicioCrudService, tipoHabitacionCrudService, id, req, resp);
+                buscarHabitacion(serviceHabitacion, serviceServicio, tipoHabitacionCrudService, id, req, resp);
                 break;
             case "crear":
             case "modificar":
-                service.crear(habitacion, servicios);
+                serviceHabitacion.crear(habitacion, servicios);
                 resp.sendRedirect(req.getContextPath() + "/habitacion");
                 break;
             case "cargar":
-                cargar(servicioCrudService, tipoHabitacionCrudService, req, resp);
+                cargar(serviceServicio, tipoHabitacionCrudService, req, resp);
                 break;
             default:
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Error acción no especificada");

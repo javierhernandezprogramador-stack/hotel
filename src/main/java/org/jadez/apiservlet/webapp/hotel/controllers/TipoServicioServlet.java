@@ -1,5 +1,6 @@
 package org.jadez.apiservlet.webapp.hotel.controllers;
 
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,18 +16,18 @@ import java.util.Optional;
 
 @WebServlet("/tipoServicio")
 public class TipoServicioServlet extends HttpServlet {
+
+    @Inject
+    private crudService<TipoServicio> serviceTipoServicio;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        crudService<TipoServicio> crudService = new TipoServicioCrudServiceImpl(conn);
-        req.setAttribute("tipoServicios", crudService.listar());
+        req.setAttribute("tipoServicios", serviceTipoServicio.listar());
         getServletContext().getRequestDispatcher("/TipoServicio/index.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        crudService<TipoServicio> crudService = new TipoServicioCrudServiceImpl(conn);
 
         String accion = req.getParameter("accion");
 
@@ -40,14 +41,14 @@ public class TipoServicioServlet extends HttpServlet {
         //acciones
         switch (accion != null ? accion : "") {
             case "cambiar":
-                cambiarTipoServicio(crudService, id, estado, req, resp);
+                cambiarTipoServicio(serviceTipoServicio, id, estado, req, resp);
                 break;
             case "buscar":
-                buscarTipoServicio(crudService, id, req, resp);
+                buscarTipoServicio(serviceTipoServicio, id, req, resp);
                 break;
             case "crear":
             case "modificar":
-                crudService.crear(tipoServicio);
+                serviceTipoServicio.crear(tipoServicio);
                 resp.sendRedirect(req.getContextPath() + "/tipoServicio");
                 break;
             default:
