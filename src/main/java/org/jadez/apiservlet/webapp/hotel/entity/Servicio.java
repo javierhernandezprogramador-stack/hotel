@@ -1,11 +1,29 @@
-package org.jadez.apiservlet.webapp.hotel.models;
+package org.jadez.apiservlet.webapp.hotel.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table
 public class Servicio {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
     private String nombre;
+
+    @Column
     private double precio;
+
+    @Column
     private String descripcion;
+
+    @Column
     private Long estado;
+
+    @Column(name = "tipo")
+    @ManyToOne(fetch = FetchType.LAZY)
     private TipoServicio tipoServicio;
 
     public Servicio() {

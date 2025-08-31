@@ -3,11 +3,9 @@ package org.jadez.apiservlet.webapp.hotel.services;
 import jakarta.inject.Inject;
 import org.jadez.apiservlet.webapp.hotel.config.Service;
 import org.jadez.apiservlet.webapp.hotel.interceptors.Transactional;
-import org.jadez.apiservlet.webapp.hotel.models.Habitacion;
-import org.jadez.apiservlet.webapp.hotel.repositories.HabitacionCrudRepositoryImpl;
+import org.jadez.apiservlet.webapp.hotel.entity.Habitacion;
 import org.jadez.apiservlet.webapp.hotel.repositories.crudRepository;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;

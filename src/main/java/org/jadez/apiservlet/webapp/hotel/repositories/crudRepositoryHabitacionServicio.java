@@ -1,8 +1,8 @@
 package org.jadez.apiservlet.webapp.hotel.repositories;
 
-import org.jadez.apiservlet.webapp.hotel.models.Habitacion;
-import org.jadez.apiservlet.webapp.hotel.models.HabitacionServicio;
-import org.jadez.apiservlet.webapp.hotel.models.Servicio;
+import org.jadez.apiservlet.webapp.hotel.entity.Habitacion;
+import org.jadez.apiservlet.webapp.hotel.entity.HabitacionServicio;
+import org.jadez.apiservlet.webapp.hotel.entity.Servicio;
 
 import java.sql.SQLException;
 import java.util.List;

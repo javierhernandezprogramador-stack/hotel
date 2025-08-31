@@ -1,9 +1,22 @@
-package org.jadez.apiservlet.webapp.hotel.models;
+package org.jadez.apiservlet.webapp.hotel.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tipo_habitacion")
 public class TipoHabitacion {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
     private String nombre;
+
+    @Column
     private String descripcion;
+
+    @Column
     private Long estado;
 
     public TipoHabitacion() {

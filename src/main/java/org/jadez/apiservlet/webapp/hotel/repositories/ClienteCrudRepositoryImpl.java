@@ -3,9 +3,9 @@ package org.jadez.apiservlet.webapp.hotel.repositories;
 import jakarta.inject.Inject;
 import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
 import org.jadez.apiservlet.webapp.hotel.config.Repository;
-import org.jadez.apiservlet.webapp.hotel.models.Cliente;
-import org.jadez.apiservlet.webapp.hotel.models.Rol;
-import org.jadez.apiservlet.webapp.hotel.models.Usuario;
+import org.jadez.apiservlet.webapp.hotel.entity.Cliente;
+import org.jadez.apiservlet.webapp.hotel.entity.Rol;
+import org.jadez.apiservlet.webapp.hotel.entity.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;

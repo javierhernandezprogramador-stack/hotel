@@ -6,12 +6,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.jadez.apiservlet.webapp.hotel.models.TipoHabitacion;
+import org.jadez.apiservlet.webapp.hotel.entity.TipoHabitacion;
 import org.jadez.apiservlet.webapp.hotel.services.crudService;
-import org.jadez.apiservlet.webapp.hotel.services.TipoHabitacionCrudServiceImpl;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.Optional;
 
 @WebServlet("/tipoHabitacion")

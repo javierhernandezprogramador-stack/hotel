@@ -3,8 +3,8 @@ package org.jadez.apiservlet.webapp.hotel.repositories;
 import jakarta.inject.Inject;
 import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
 import org.jadez.apiservlet.webapp.hotel.config.Repository;
-import org.jadez.apiservlet.webapp.hotel.models.Habitacion;
-import org.jadez.apiservlet.webapp.hotel.models.TipoHabitacion;
+import org.jadez.apiservlet.webapp.hotel.entity.Habitacion;
+import org.jadez.apiservlet.webapp.hotel.entity.TipoHabitacion;
 
 import java.sql.*;
 import java.util.ArrayList;

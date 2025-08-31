@@ -1,4 +1,4 @@
-package org.jadez.apiservlet.webapp.hotel.models;
+package org.jadez.apiservlet.webapp.hotel.entity;
 
 public class Rol {
     private Long id;

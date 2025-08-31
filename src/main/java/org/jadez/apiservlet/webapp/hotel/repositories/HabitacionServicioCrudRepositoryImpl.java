@@ -3,10 +3,10 @@ package org.jadez.apiservlet.webapp.hotel.repositories;
 import jakarta.inject.Inject;
 import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
 import org.jadez.apiservlet.webapp.hotel.config.Repository;
-import org.jadez.apiservlet.webapp.hotel.models.Habitacion;
-import org.jadez.apiservlet.webapp.hotel.models.HabitacionServicio;
-import org.jadez.apiservlet.webapp.hotel.models.Servicio;
-import org.jadez.apiservlet.webapp.hotel.models.TipoServicio;
+import org.jadez.apiservlet.webapp.hotel.entity.Habitacion;
+import org.jadez.apiservlet.webapp.hotel.entity.HabitacionServicio;
+import org.jadez.apiservlet.webapp.hotel.entity.Servicio;
+import org.jadez.apiservlet.webapp.hotel.entity.TipoServicio;
 
 import java.sql.*;
 import java.util.ArrayList;

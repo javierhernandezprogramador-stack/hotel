@@ -8,11 +8,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import org.jadez.apiservlet.webapp.hotel.models.*;
+import org.jadez.apiservlet.webapp.hotel.entity.*;
 import org.jadez.apiservlet.webapp.hotel.services.*;
 
 import java.io.*;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -1,6 +1,4 @@
-package org.jadez.apiservlet.webapp.hotel.models;
-
-import java.util.List;
+package org.jadez.apiservlet.webapp.hotel.entity;
 
 public class Habitacion {
     private Long id;

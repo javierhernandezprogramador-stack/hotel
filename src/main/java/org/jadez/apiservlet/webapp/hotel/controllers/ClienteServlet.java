@@ -6,13 +6,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.jadez.apiservlet.webapp.hotel.config.Service;
-import org.jadez.apiservlet.webapp.hotel.models.*;
-import org.jadez.apiservlet.webapp.hotel.services.ClienteCrudServiceImpl;
+import org.jadez.apiservlet.webapp.hotel.entity.*;
 import org.jadez.apiservlet.webapp.hotel.services.crudService;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.Optional;
 

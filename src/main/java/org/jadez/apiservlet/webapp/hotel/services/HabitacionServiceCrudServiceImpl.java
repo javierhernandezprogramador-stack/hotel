@@ -3,15 +3,12 @@ package org.jadez.apiservlet.webapp.hotel.services;
 import jakarta.inject.Inject;
 import org.jadez.apiservlet.webapp.hotel.config.Service;
 import org.jadez.apiservlet.webapp.hotel.interceptors.Transactional;
-import org.jadez.apiservlet.webapp.hotel.models.Habitacion;
-import org.jadez.apiservlet.webapp.hotel.models.HabitacionServicio;
-import org.jadez.apiservlet.webapp.hotel.models.Servicio;
-import org.jadez.apiservlet.webapp.hotel.repositories.HabitacionCrudRepositoryImpl;
-import org.jadez.apiservlet.webapp.hotel.repositories.HabitacionServicioCrudRepositoryImpl;
+import org.jadez.apiservlet.webapp.hotel.entity.Habitacion;
+import org.jadez.apiservlet.webapp.hotel.entity.HabitacionServicio;
+import org.jadez.apiservlet.webapp.hotel.entity.Servicio;
 import org.jadez.apiservlet.webapp.hotel.repositories.crudRepository;
 import org.jadez.apiservlet.webapp.hotel.repositories.crudRepositoryHabitacionServicio;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
