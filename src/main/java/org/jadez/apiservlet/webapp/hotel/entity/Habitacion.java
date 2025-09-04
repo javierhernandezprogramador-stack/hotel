@@ -1,7 +1,17 @@
 package org.jadez.apiservlet.webapp.hotel.entity;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
 public class Habitacion {
+
+    @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "numero_habitacion")
     private String numeroHabitacion;
     private String descripcion;
     private Integer capacidad;
@@ -11,7 +21,15 @@ public class Habitacion {
     private Integer cama;
     private Integer bw;
     private String imagen;
+
+    @Column(name = "tipo")
     private TipoHabitacion tipoHabitacion;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "tbl_habitacion_servicio", joinColumns = @JoinColumn(name = "id_habitacion"),
+    inverseJoinColumns = @JoinColumn(name = "id_servicio"),
+    uniqueConstraints = @UniqueConstraint(columnNames = {"id_habitacion", "id_servicio"}))
+    private List<Servicio> servicios;
 
     public Habitacion() {
     }
@@ -102,5 +120,13 @@ public class Habitacion {
 
     public void setBw(Integer bw) {
         this.bw = bw;
+    }
+
+    public List<Servicio> getServicios() {
+        return servicios;
+    }
+
+    public void setServicios(List<Servicio> servicios) {
+        this.servicios = servicios;
     }
 }

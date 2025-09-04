@@ -1,10 +1,17 @@
 package org.jadez.apiservlet.webapp.hotel.entity;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     private String password;
     private Long estado;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Rol rol;
 
     public Usuario() {

@@ -1,6 +1,7 @@
 package org.jadez.apiservlet.webapp.hotel.repositories;
 
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
 import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.entity.Cliente;
@@ -16,23 +17,16 @@ public class ClienteCrudRepositoryImpl implements crudRepository<Cliente> {
     private Connection conn;
 
     @Inject
+    private EntityManager em;
+
+    @Inject
     public ClienteCrudRepositoryImpl(@MysqlConn Connection conn) {
         this.conn = conn;
     }
 
     @Override
     public List<Cliente> listar() throws SQLException {
-        List<Cliente> clientes = new ArrayList<>();
-        String sql = "SELECT c.*, u.password AS usuario_password, u.email AS usuario_email, u.estado AS usuario_estado, r.id AS rol, r.nombre AS rol_nombre FROM cliente c INNER JOIN usuario u ON u.id = c.usuario INNER JOIN rol r ON r.id = u.rol";
-
-        try(Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql)) {
-            while(rs.next()) {
-                clientes.add(getCliente(rs));
-            }
-        }
-
-        return clientes;
+        return em.createQuery("SELECT c FROM Cliente", Cliente.class).getResultList();
     }
 
     @Override

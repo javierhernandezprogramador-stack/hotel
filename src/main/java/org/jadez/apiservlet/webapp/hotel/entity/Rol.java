@@ -1,6 +1,12 @@
 package org.jadez.apiservlet.webapp.hotel.entity;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Rol {
+
+    @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
     private String nombre;
 

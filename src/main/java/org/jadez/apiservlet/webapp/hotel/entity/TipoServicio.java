@@ -9,14 +9,8 @@ public class TipoServicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column
     private String nombre;
-
-    @Column
     private Long estado;
-
-    @Column
     private String descripcion;
 
     public TipoServicio() {

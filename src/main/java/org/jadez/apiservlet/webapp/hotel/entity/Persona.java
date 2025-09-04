@@ -1,16 +1,28 @@
 package org.jadez.apiservlet.webapp.hotel.entity;
 
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@MappedSuperclass
 public abstract class Persona {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private String apellido;
     private String telefono;
     private String dui;
+
+    @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Long estado;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Usuario usuario;
 
     public Persona() {

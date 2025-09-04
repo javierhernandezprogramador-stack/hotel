@@ -1,5 +1,8 @@
 package org.jadez.apiservlet.webapp.hotel.entity;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class Cliente extends Persona{
     private String pasaporte;
     private String nacionalidad;

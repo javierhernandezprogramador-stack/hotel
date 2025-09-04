@@ -2,29 +2,25 @@ package org.jadez.apiservlet.webapp.hotel.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
-@Table
 public class Servicio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column
     private String nombre;
-
-    @Column
     private double precio;
-
-    @Column
     private String descripcion;
-
-    @Column
     private Long estado;
 
     @Column(name = "tipo")
     @ManyToOne(fetch = FetchType.LAZY)
     private TipoServicio tipoServicio;
+
+    @ManyToMany(mappedBy = "servicios")
+    private List<Habitacion> habitaciones;
 
     public Servicio() {
     }
@@ -75,5 +71,13 @@ public class Servicio {
 
     public void setTipoServicio(TipoServicio tipoServicio) {
         this.tipoServicio = tipoServicio;
+    }
+
+    public List<Habitacion> getHabitaciones() {
+        return habitaciones;
+    }
+
+    public void setHabitaciones(List<Habitacion> habitaciones) {
+        this.habitaciones = habitaciones;
     }
 }

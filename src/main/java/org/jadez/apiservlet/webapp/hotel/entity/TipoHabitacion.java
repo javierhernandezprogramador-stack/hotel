@@ -9,14 +9,8 @@ public class TipoHabitacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column
     private String nombre;
-
-    @Column
     private String descripcion;
-
-    @Column
     private Long estado;
 
     public TipoHabitacion() {
