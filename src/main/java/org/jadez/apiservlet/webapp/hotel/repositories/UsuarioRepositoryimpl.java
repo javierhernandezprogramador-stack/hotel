@@ -1,6 +1,7 @@
 package org.jadez.apiservlet.webapp.hotel.repositories;
 
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
 import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.entity.Rol;
@@ -15,115 +16,49 @@ public class UsuarioRepositoryimpl implements crudRepositoryUsuario {
     private Connection conn;
 
     @Inject
+    private EntityManager em;
+
+    @Inject
     public UsuarioRepositoryimpl(@MysqlConn Connection conn) {
         this.conn = conn;
     }
 
     @Override
     public List<Usuario> listar() throws SQLException {
-        String sql = "SELECT u.*, r.nombre AS nombre_rol FROM usuario u INNER JOIN rol r ON u.rol = r.id";
-        List<Usuario> usuarios = new ArrayList<>();
-
-        try(Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql)) {
-            while(rs.next()) {
-                usuarios.add(getUsuario(rs));
-            }
-        }
-
-        return usuarios;
+        return em.createQuery("SELECT u FROM Usuario", Usuario.class).getResultList();
     }
 
     //Esta esta siendo usada por service
     @Override
     public Usuario crear(Usuario usuario) throws SQLException {
-        String sql = (usuario.getId() != null) ? "UPDATE usuario SET email = ? WHERE id = ?" : "INSERT INTO usuario(email, password, rol, estado) VALUES(?,?,?,?)";
-
-        /*REVISAR LOS ESTADOS PORQUE ESTAN VACIOS Y ESO DA ERROR AL INSERTAR*/
-
-        try(PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, usuario.getEmail());
-
-            if(usuario.getId() != null) {
-                stmt.setLong(2, usuario.getId());
-            }else {
-                stmt.setString(2, usuario.getPassword());
-                stmt.setLong(3, usuario.getRol().getId());
-                stmt.setLong(4, usuario.getEstado());
-            }
-
-            stmt.executeUpdate();
-            usuario.setId(obtenerPrimaryKey(usuario, stmt));//revisar porque no funciona el rotornar id
-
+        if(usuario.getId() != null) {
+            em.merge(usuario);
+        }else {
+            em.persist(usuario);
         }
+
         return usuario;
     }
 
     @Override
     public Usuario porId(Long id) throws SQLException {
-        Usuario usuario = null;
-        String sql = "SELECT u.*, r.nombre AS nombre_rol FROM usuario u INNER JOIN rol r ON u.rol = r.id WHERE u.id = ?";
-
-        try(PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-
-            try(ResultSet rs = stmt.executeQuery()) {
-                if(rs.next()) {
-                    usuario = getUsuario(rs);
-                }
-            }
-        }
-
-        return usuario;
+        return em.find(Usuario.class, id);
     }
 
     //esto deberia de ser utulizado en el service
     @Override
     public void updateEstado(Long id, Long estado) throws SQLException {
-        String sql = "UPDATE usuario SET estado = ? WHERE id = ?";
-
-        try(PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, estado);
-            stmt.setLong(2, id);
-            stmt.executeUpdate();
-        }
-    }
-
-    private static Long obtenerPrimaryKey(Usuario usuario, Statement stmt) throws SQLException{
-        if (usuario.getId() == null) {
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) {
-                    return rs.getLong(1);
-                }
-            }
-        }
-        return usuario.getId();
-    }
-
-    private static Usuario getUsuario(ResultSet rs) throws SQLException {
-        Usuario usuario = new Usuario();
-        usuario.setId(rs.getLong("id"));
-        usuario.setEmail(rs.getString("email"));
-        usuario.setPassword(rs.getString("password"));
-        usuario.setRol(getRol(rs));
-        return usuario;
-    }
-
-    private static Rol getRol(ResultSet rs) throws SQLException {
-        Rol rol = new Rol();
-        rol.setId(rs.getLong("rol"));
-        rol.setNombre(rs.getString("nombre_rol"));
-        return rol;
+        em.createQuery("UPDATE Usuario u SET u.estado = :estado WHERE u.id = :id")
+                .setParameter("estado", estado)
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     @Override
     public void cambiarPassword(Usuario usuario) throws SQLException {
-        String sql = "Update usuario SET password = ? WHERE email = ?";
-
-        try(PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1,usuario.getPassword());
-            stmt.setString(2, usuario.getEmail());
-            stmt.executeUpdate();
-        }
+        em.createQuery("UPDATE Usuario u SET u.password = :password WHERE u.email = :email")
+                .setParameter("password", usuario.getPassword())
+                .setParameter("email", usuario.getEmail())
+                .executeUpdate();
     }
 }

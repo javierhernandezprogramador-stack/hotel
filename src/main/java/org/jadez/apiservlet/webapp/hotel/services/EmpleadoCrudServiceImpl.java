@@ -2,9 +2,10 @@ package org.jadez.apiservlet.webapp.hotel.services;
 
 import jakarta.inject.Inject;
 import org.jadez.apiservlet.webapp.hotel.config.Service;
-import org.jadez.apiservlet.webapp.hotel.interceptors.Transactional;
 import org.jadez.apiservlet.webapp.hotel.entity.Cliente;
+import org.jadez.apiservlet.webapp.hotel.entity.Empleado;
 import org.jadez.apiservlet.webapp.hotel.entity.Usuario;
+import org.jadez.apiservlet.webapp.hotel.interceptors.Transactional;
 import org.jadez.apiservlet.webapp.hotel.repositories.crudRepository;
 import org.jadez.apiservlet.webapp.hotel.repositories.crudRepositoryUsuario;
 import org.jadez.apiservlet.webapp.hotel.utils.GenerarPassword;
@@ -16,45 +17,45 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class ClienteCrudServiceImpl implements crudService<Cliente> {
+public class EmpleadoCrudServiceImpl implements crudService<Empleado> {
 
     @Inject
     private crudRepositoryUsuario repositoryUsuario;
 
     @Inject
-    private crudRepository<Cliente> crudRepositoryCliente;
+    private crudRepository<Empleado> crudRepositoryEmpleado;
 
     @Inject
     private GenerarPassword password;
 
     @Override
-    public List<Cliente> listar() {
+    public List<Empleado> listar() {
         try {
-            return crudRepositoryCliente.listar();
+            return crudRepositoryEmpleado.listar();
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
     }
 
     @Override
-    public Cliente crear(Cliente cliente) {
+    public Empleado crear(Empleado empleado) {
         try {
-            if (cliente.getId() == null) {
-                cliente.getUsuario().setPassword(password.generarPassword());
+            if (empleado.getId() == null) {
+                empleado.getUsuario().setPassword(password.generarPassword());
             }
-            Usuario usuario = repositoryUsuario.crear(cliente.getUsuario());
-            cliente.setUsuario(usuario);
+            Usuario usuario = repositoryUsuario.crear(empleado.getUsuario());
+            empleado.setUsuario(usuario);
 
-            return crudRepositoryCliente.crear(cliente);
+            return crudRepositoryEmpleado.crear(empleado);
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
     }
 
     @Override
-    public Optional<Cliente> porId(Long id) {
+    public Optional<Empleado> porId(Long id) {
         try {
-            return Optional.ofNullable(crudRepositoryCliente.porId(id));
+            return Optional.ofNullable(crudRepositoryEmpleado.porId(id));
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -63,9 +64,10 @@ public class ClienteCrudServiceImpl implements crudService<Cliente> {
     @Override
     public void updateEstado(Long id, Long estado) {//aqui necesito mandar el objeto
         try {
-            crudRepositoryCliente.updateEstado(id, estado);
+            crudRepositoryEmpleado.updateEstado(id, estado);
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
     }
+
 }
