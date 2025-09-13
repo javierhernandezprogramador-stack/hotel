@@ -11,7 +11,7 @@ public class Usuario {
     private String password;
     private Long estado;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Rol rol;
 
     public Usuario() {
