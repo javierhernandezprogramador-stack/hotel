@@ -1,0 +1,51 @@
+package org.jadez.apiservlet.webapp.hotel.services;
+
+import jakarta.inject.Inject;
+import org.jadez.apiservlet.webapp.hotel.entity.TipoPago;
+import org.jadez.apiservlet.webapp.hotel.repositories.crudRepository;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
+public class TipoPagoCrudServiceImpl implements crudService<TipoPago>{
+
+    @Inject
+    private crudRepository<TipoPago> tipoPagocrudRepository;
+
+    @Override
+    public List<TipoPago> listar() {
+        try {
+            return tipoPagocrudRepository.listar();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public TipoPago crear(TipoPago tipoPago) {
+        try {
+            return tipoPagocrudRepository.crear(tipoPago);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Optional<TipoPago> porId(Long id) {
+        try {
+            return Optional.ofNullable(tipoPagocrudRepository.porId(id));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateEstado(Long id, Long estado) {
+        try {
+            tipoPagocrudRepository.updateEstado(id, estado);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
