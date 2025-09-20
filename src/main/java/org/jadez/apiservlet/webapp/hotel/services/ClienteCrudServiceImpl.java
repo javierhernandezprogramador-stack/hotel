@@ -1,28 +1,30 @@
 package org.jadez.apiservlet.webapp.hotel.services;
 
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import org.jadez.apiservlet.webapp.hotel.config.Service;
-import org.jadez.apiservlet.webapp.hotel.interceptors.Transactional;
 import org.jadez.apiservlet.webapp.hotel.entity.Cliente;
 import org.jadez.apiservlet.webapp.hotel.entity.Usuario;
-import org.jadez.apiservlet.webapp.hotel.repositories.crudRepository;
-import org.jadez.apiservlet.webapp.hotel.repositories.crudRepositoryUsuario;
+import org.jadez.apiservlet.webapp.hotel.repositories.CrudRepository;
+import org.jadez.apiservlet.webapp.hotel.repositories.CrudRepositoryUsuario;
+import org.jadez.apiservlet.webapp.hotel.repositories.RepositoryJpa;
 import org.jadez.apiservlet.webapp.hotel.utils.GenerarPassword;
 
-import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
-public class ClienteCrudServiceImpl implements crudService<Cliente> {
+@Stateless
+public class ClienteCrudServiceImpl implements CrudService<Cliente> {
 
     @Inject
-    private crudRepositoryUsuario repositoryUsuario;
+    @RepositoryJpa
+    private CrudRepositoryUsuario repositoryUsuario;
 
     @Inject
-    private crudRepository<Cliente> crudRepositoryCliente;
+    @RepositoryJpa
+    private CrudRepository<Cliente> crudRepositoryCliente;
 
     @Inject
     private GenerarPassword password;

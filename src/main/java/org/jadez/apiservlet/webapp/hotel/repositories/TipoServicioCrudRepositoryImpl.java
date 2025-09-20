@@ -2,29 +2,21 @@ package org.jadez.apiservlet.webapp.hotel.repositories;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
 import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.entity.TipoServicio;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
+@RepositoryJpa
 @Repository
-public class TipoServicioCrudRepositoryImpl implements crudRepository<TipoServicio> {
-    private Connection conn;
-
+public class TipoServicioCrudRepositoryImpl implements CrudRepository<TipoServicio> {
     @Inject
     private EntityManager em;
 
-    @Inject
-    public TipoServicioCrudRepositoryImpl(@MysqlConn Connection conn) {
-        this.conn = conn;
-    }
-
     @Override
     public List<TipoServicio> listar() throws SQLException {
-        return em.createQuery("SELECT t FROM TipoServicio", TipoServicio.class).getResultList();
+        return em.createQuery("SELECT t FROM TipoServicio t", TipoServicio.class).getResultList();
     }
 
     @Override

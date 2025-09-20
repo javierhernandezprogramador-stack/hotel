@@ -1,21 +1,23 @@
 package org.jadez.apiservlet.webapp.hotel.services;
 
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import org.jadez.apiservlet.webapp.hotel.config.Service;
-import org.jadez.apiservlet.webapp.hotel.interceptors.Transactional;
 import org.jadez.apiservlet.webapp.hotel.entity.TipoHabitacion;
-import org.jadez.apiservlet.webapp.hotel.repositories.crudRepository;
+import org.jadez.apiservlet.webapp.hotel.repositories.CrudRepository;
+import org.jadez.apiservlet.webapp.hotel.repositories.RepositoryJpa;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
-public class TipoHabitacionCrudServiceImpl implements crudService<TipoHabitacion> {
+@Stateless
+public class TipoHabitacionCrudServiceImpl implements CrudService<TipoHabitacion> {
 
     @Inject
-    private crudRepository<TipoHabitacion> crudRepository;
+    @RepositoryJpa
+    private CrudRepository<TipoHabitacion> crudRepository;
 
     @Override
     public List<TipoHabitacion> listar() {

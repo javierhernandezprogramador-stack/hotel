@@ -4,6 +4,6 @@ import org.jadez.apiservlet.webapp.hotel.entity.Usuario;
 
 import java.sql.SQLException;
 
-public interface crudRepositoryUsuario extends crudRepository<Usuario> {
+public interface CrudRepositoryUsuario extends CrudRepository<Usuario> {
     void cambiarPassword(Usuario t) throws SQLException;
 }

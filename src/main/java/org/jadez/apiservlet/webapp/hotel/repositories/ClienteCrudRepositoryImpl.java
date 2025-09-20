@@ -2,28 +2,21 @@ package org.jadez.apiservlet.webapp.hotel.repositories;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
 import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.entity.Cliente;
 
 import java.sql.*;
 import java.util.List;
 
+@RepositoryJpa
 @Repository
-public class ClienteCrudRepositoryImpl implements crudRepository<Cliente> {
-    private Connection conn;
-
+public class ClienteCrudRepositoryImpl implements CrudRepository<Cliente> {
     @Inject
     private EntityManager em;
 
-    @Inject
-    public ClienteCrudRepositoryImpl(@MysqlConn Connection conn) {
-        this.conn = conn;
-    }
-
     @Override
     public List<Cliente> listar() throws SQLException {
-        return em.createQuery("SELECT c FROM Cliente", Cliente.class).getResultList();
+        return em.createQuery("SELECT c FROM Cliente c", Cliente.class).getResultList();
     }
 
     @Override
@@ -44,7 +37,7 @@ public class ClienteCrudRepositoryImpl implements crudRepository<Cliente> {
 
     @Override
     public void updateEstado(Long id, Long estado) throws SQLException {
-        em.createQuery("UPDATE Cliente c SET c.estado = :estado WHERE id = :id")
+        em.createQuery("UPDATE Cliente c SET c.estado = :estado WHERE c.id = :id")
                 .setParameter("estado", estado)
                 .setParameter("id", id)
                 .executeUpdate();

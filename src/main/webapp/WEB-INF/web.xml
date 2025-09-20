@@ -5,6 +5,7 @@
                              https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
+    <!--
     <context-param>
         <param-name>upload.path</param-name>
         <param-value>C:/imagenes/</param-value>
@@ -18,13 +19,15 @@
     <servlet-mapping>
         <servlet-name>UploadServlet</servlet-name>
         <url-pattern>/upload</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> -->
 
-    <resource-ref>
-        <description>DB Connection</description>
-        <res-ref-name>jdbc/MysqlDB</res-ref-name>
-        <res-type>javax.sql.DataSource</res-type>
-        <res-auth>Container</res-auth>
-    </resource-ref>
+    <servlet>
+        <servlet-name>jakarta.ws.rs.core.Application</servlet-name>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>jakarta.ws.rs.core.Application</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>

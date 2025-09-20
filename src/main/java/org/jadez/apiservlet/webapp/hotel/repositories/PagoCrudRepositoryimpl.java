@@ -2,22 +2,18 @@ package org.jadez.apiservlet.webapp.hotel.repositories;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
+import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.entity.Pago;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class PagoCrudRepositoryimpl implements crudRepository<Pago>{
-    private Connection conn;
+@RepositoryJpa
+@Repository
+public class PagoCrudRepositoryimpl implements CrudRepository<Pago> {
 
     @Inject
     private EntityManager em;
-
-    public PagoCrudRepositoryimpl(@MysqlConn Connection conn) {
-        this.conn = conn;
-    }
 
     @Override
     public List<Pago> listar() throws SQLException {

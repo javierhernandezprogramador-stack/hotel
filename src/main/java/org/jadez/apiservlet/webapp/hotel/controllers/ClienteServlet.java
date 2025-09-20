@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jadez.apiservlet.webapp.hotel.entity.*;
-import org.jadez.apiservlet.webapp.hotel.services.crudService;
+import org.jadez.apiservlet.webapp.hotel.services.CrudService;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class ClienteServlet extends HttpServlet {
 
     @Inject
-    private crudService<Cliente> serviceCliente;
+    private CrudService<Cliente> serviceCliente;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -103,7 +103,7 @@ public class ClienteServlet extends HttpServlet {
         return cliente;
     }
 
-    private void cambiarEstado(crudService<Servicio> crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void cambiarEstado(CrudService<Servicio> crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Optional<Servicio> optional = crudService.porId(id);
         if (optional.isPresent()) {
             crudService.updateEstado(id, estado);
@@ -113,7 +113,7 @@ public class ClienteServlet extends HttpServlet {
         }
     }
 
-    private void buscarCliente(crudService<Cliente> clienteCrudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    private void buscarCliente(CrudService<Cliente> clienteCrudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         Optional<Cliente> optional = clienteCrudService.porId(id);
 
         if (optional.isPresent()) {

@@ -15,7 +15,6 @@ public class Servicio {
     private String descripcion;
     private Long estado;
 
-    @Column(name = "tipo")
     @ManyToOne(fetch = FetchType.LAZY)
     private TipoServicio tipoServicio;
 

@@ -2,30 +2,21 @@ package org.jadez.apiservlet.webapp.hotel.repositories;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
 import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.entity.Servicio;
-import org.jadez.apiservlet.webapp.hotel.entity.TipoServicio;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
+@RepositoryJpa
 @Repository
-public class ServicioCrudRepositoryImpl implements crudRepository<Servicio> {
-    private Connection conn;
-
+public class ServicioCrudRepositoryImpl implements CrudRepository<Servicio> {
     @Inject
     private EntityManager em;
 
-    @Inject
-    public ServicioCrudRepositoryImpl(@MysqlConn Connection conn) {
-        this.conn = conn;
-    }
-
     @Override
     public List<Servicio> listar() throws SQLException {
-        return em.createQuery("SELECT s FROM Servicio", Servicio.class).getResultList();
+        return em.createQuery("SELECT s FROM Servicio s", Servicio.class).getResultList();
         //String sql = "SELECT s.*, TRUNCATE(s.precio, 2) AS precio, t.nombre AS nombre_tipo_servicio, t.descripcion AS descripcion_tipo_servicio, t.estado AS estado_tipo_servicio FROM servicio s INNER JOIN tipo_servicio t ON s.tipo = t.id";
     }
 
@@ -48,7 +39,7 @@ public class ServicioCrudRepositoryImpl implements crudRepository<Servicio> {
 
     @Override
     public void updateEstado(Long id, Long estado) throws SQLException {
-        em.createQuery("UPDATE Servicio SET estado = :estado WHERE id = :id")
+        em.createQuery("UPDATE Servicio s SET s.estado = :estado WHERE s.id = :id")
                 .setParameter(":estado", estado)
                 .setParameter(":id", id)
                 .executeUpdate();

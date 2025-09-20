@@ -18,8 +18,6 @@ public abstract class Persona {
 
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Long estado;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)

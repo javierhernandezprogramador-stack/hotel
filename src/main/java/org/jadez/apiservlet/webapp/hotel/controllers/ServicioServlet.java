@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jadez.apiservlet.webapp.hotel.entity.Servicio;
 import org.jadez.apiservlet.webapp.hotel.entity.TipoServicio;
-import org.jadez.apiservlet.webapp.hotel.services.crudService;
+import org.jadez.apiservlet.webapp.hotel.services.CrudService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -17,10 +17,10 @@ import java.util.Optional;
 public class ServicioServlet extends HttpServlet {
 
     @Inject
-    private crudService<Servicio> serviceServicio;
+    private CrudService<Servicio> serviceServicio;
 
     @Inject
-    private crudService<TipoServicio> tipoServicioCrudService;
+    private CrudService<TipoServicio> tipoServicioCrudService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -62,7 +62,7 @@ public class ServicioServlet extends HttpServlet {
         }
     }
 
-    private void cargar(crudService<TipoServicio> crudService, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    private void cargar(CrudService<TipoServicio> crudService, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         req.setAttribute("tipos", crudService.listar());
         getServletContext().getRequestDispatcher("/Servicio/formulario.jsp").forward(req, resp);
     }
@@ -98,7 +98,7 @@ public class ServicioServlet extends HttpServlet {
         return servicio;
     }
 
-    private void cambiarEstado(crudService<Servicio> crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void cambiarEstado(CrudService<Servicio> crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Optional<Servicio> optional = crudService.porId(id);
         if (optional.isPresent()) {
             crudService.updateEstado(id, estado);
@@ -108,7 +108,7 @@ public class ServicioServlet extends HttpServlet {
         }
     }
 
-    private void buscarServicio(crudService<Servicio> servicioCrudService, crudService<TipoServicio> tipoServicioCrudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    private void buscarServicio(CrudService<Servicio> servicioCrudService, CrudService<TipoServicio> tipoServicioCrudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         Optional<Servicio> optional = servicioCrudService.porId(id);
 
         if (optional.isPresent()) {

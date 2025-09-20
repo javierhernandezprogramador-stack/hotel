@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jadez.apiservlet.webapp.hotel.entity.TipoServicio;
-import org.jadez.apiservlet.webapp.hotel.services.crudService;
+import org.jadez.apiservlet.webapp.hotel.services.CrudService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class TipoServicioServlet extends HttpServlet {
 
     @Inject
-    private crudService<TipoServicio> serviceTipoServicio;
+    private CrudService<TipoServicio> serviceTipoServicio;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -72,7 +72,7 @@ public class TipoServicioServlet extends HttpServlet {
         return tipoServicio;
     }
 
-    private void cambiarTipoServicio(crudService<TipoServicio> crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void cambiarTipoServicio(CrudService<TipoServicio> crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Optional<TipoServicio> optional = crudService.porId(id);
         if (optional.isPresent()) {
             crudService.updateEstado(id, estado);
@@ -82,7 +82,7 @@ public class TipoServicioServlet extends HttpServlet {
         }
     }
 
-    private void buscarTipoServicio(crudService<TipoServicio> crudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    private void buscarTipoServicio(CrudService<TipoServicio> crudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Optional<TipoServicio> optional = crudService.porId(id);
         if (optional.isPresent()) {
             req.setAttribute("tipoServicio", optional.get());

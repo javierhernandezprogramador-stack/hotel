@@ -1,7 +1,10 @@
 package org.jadez.apiservlet.webapp.hotel.services;
 
+import jakarta.ejb.Local;
+
 import java.util.List;
 
-public interface crudServiceHabitacion<T> extends crudService {
+@Local
+public interface CrudServiceHabitacion<T> extends CrudService {
     T crear(T t, List<T> lista);
 }

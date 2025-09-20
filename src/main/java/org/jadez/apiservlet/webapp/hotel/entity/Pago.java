@@ -14,7 +14,7 @@ public class Pago {
     private double monto;
     private Long estado;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private TipoPago tipoPago;
 
     public Pago() {

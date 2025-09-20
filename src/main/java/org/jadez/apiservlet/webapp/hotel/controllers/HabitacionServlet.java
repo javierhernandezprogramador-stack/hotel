@@ -21,14 +21,14 @@ import java.util.UUID;
 @MultipartConfig
 public class HabitacionServlet extends HttpServlet {
 
-    @Inject
-    private crudServiceHabitacion serviceHabitacion;
+    /*@Inject
+    private CrudService<Habitacion> serviceHabitacion;
 
     @Inject
-    private crudService<TipoHabitacion> tipoHabitacionCrudService;
+    private CrudService<TipoHabitacion> tipoHabitacionCrudService;
 
     @Inject
-    private crudService<Servicio> serviceServicio;
+    private CrudService<Servicio> serviceServicio;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -103,7 +103,7 @@ public class HabitacionServlet extends HttpServlet {
         return servicios;
     }
 
-    private void cargar(crudService<Servicio> servicioCrudService, crudService<TipoHabitacion> tipoHabitacionCrudService, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    private void cargar(CrudService<Servicio> servicioCrudService, CrudService<TipoHabitacion> tipoHabitacionCrudService, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         req.setAttribute("tipos", tipoHabitacionCrudService.listar());
         req.setAttribute("servicios", servicioCrudService.listar());
         getServletContext().getRequestDispatcher("/Habitacion/formulario.jsp").forward(req, resp);
@@ -186,7 +186,7 @@ public class HabitacionServlet extends HttpServlet {
         return habitacion;
     }
 
-    private void cambiarEstado(crudService crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void cambiarEstado(CrudService crudService, Long id, Long estado, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Optional<HabitacionServicio> optional = crudService.porId(id);
         if (optional.isPresent()) {
             crudService.updateEstado(id, estado);
@@ -196,7 +196,7 @@ public class HabitacionServlet extends HttpServlet {
         }
     }
 
-    private void buscarHabitacion(crudServiceHabitacion service, crudService<Servicio> servicioCrudService, crudService<TipoHabitacion> tipoHabitacionCrudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    private void buscarHabitacion(CrudServiceHabitacion service, CrudService<Servicio> servicioCrudService, CrudService<TipoHabitacion> tipoHabitacionCrudService, Long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         Optional<HabitacionServicio> optional = service.porId(id);
 
         if (optional.isPresent()) {
@@ -225,5 +225,5 @@ public class HabitacionServlet extends HttpServlet {
             return fileName.substring(fileName.lastIndexOf("."));
         }
         return null;
-    }
+    }*/
 }

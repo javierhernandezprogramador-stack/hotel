@@ -2,30 +2,22 @@ package org.jadez.apiservlet.webapp.hotel.repositories;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
 import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.entity.Habitacion;
-import org.jadez.apiservlet.webapp.hotel.entity.TipoHabitacion;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
+@RepositoryJpa
 @Repository
-public class HabitacionCrudRepositoryImpl implements crudRepository<Habitacion> {
-    private Connection conn;
+public class HabitacionCrudRepositoryImpl implements CrudRepository<Habitacion> {
 
     @Inject
     private EntityManager em;
 
-    @Inject
-    public HabitacionCrudRepositoryImpl(@MysqlConn Connection conn) {
-        this.conn = conn;
-    }
-
     @Override
     public List<Habitacion> listar() throws SQLException {
-        return em.createQuery("SELECT h FROM Habitacion", Habitacion.class).getResultList();
+        return em.createQuery("SELECT h FROM Habitacion h", Habitacion.class).getResultList();
     }
 
     @Override
@@ -47,7 +39,7 @@ public class HabitacionCrudRepositoryImpl implements crudRepository<Habitacion> 
 
     @Override
     public void updateEstado(Long id, Long estado) throws SQLException {
-        em.createQuery("UPDATE h SET estado = :estado WHERE id = :id")
+        em.createQuery("UPDATE h SET estado = :estado WHERE h.id = :id")
                 .setParameter(":estado", estado)
                 .setParameter(":id", id)
                 .executeUpdate();

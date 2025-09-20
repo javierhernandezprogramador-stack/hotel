@@ -2,23 +2,17 @@ package org.jadez.apiservlet.webapp.hotel.repositories;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import org.jadez.apiservlet.webapp.hotel.config.MysqlConn;
+import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.entity.TipoPago;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class TipoPagoCrudRepositoryImpl implements crudRepository<TipoPago>{
-
-    private Connection conn;
-
+@RepositoryJpa
+@Repository
+public class TipoPagoCrudRepositoryImpl implements CrudRepository<TipoPago> {
     @Inject
     private EntityManager em;
-
-    public TipoPagoCrudRepositoryImpl(@MysqlConn Connection conn) {
-        this.conn = conn;
-    }
 
     @Override
     public List<TipoPago> listar() throws SQLException {
@@ -44,7 +38,7 @@ public class TipoPagoCrudRepositoryImpl implements crudRepository<TipoPago>{
 
     @Override
     public void updateEstado(Long id, Long estado) throws SQLException {
-        em.createQuery("UPDATE TipoPago t SET t.estado = :estado WHERE id = :id")
+        em.createQuery("UPDATE TipoPago t SET t.estado = :estado WHERE t.id = :id")
                 .setParameter("estado", estado)
                 .setParameter("id", id)
                 .executeUpdate();

@@ -3,7 +3,7 @@ package org.jadez.apiservlet.webapp.hotel.repositories;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface crudRepository<T> {
+public interface CrudRepository<T> {
 
     List<T> listar() throws SQLException;
 

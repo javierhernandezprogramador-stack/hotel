@@ -12,7 +12,6 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Logging
-@ApplicationScoped
 @Named
 @Stereotype
 @Retention(RUNTIME)

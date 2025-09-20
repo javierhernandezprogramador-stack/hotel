@@ -22,7 +22,7 @@ public class Habitacion {
     private Integer bw;
     private String imagen;
 
-    @Column(name = "tipo")
+    @ManyToOne(fetch = FetchType.LAZY)
     private TipoHabitacion tipoHabitacion;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
