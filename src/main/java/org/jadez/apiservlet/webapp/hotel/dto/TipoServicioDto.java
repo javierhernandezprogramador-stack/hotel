@@ -1,26 +1,19 @@
-package org.jadez.apiservlet.webapp.hotel.entity;
+package org.jadez.apiservlet.webapp.hotel.dto;
 
-import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import org.jadez.apiservlet.webapp.hotel.entity.TipoServicio;
 
-//@XmlRootElement(name = "tipo_servicio")
-@Entity
-@Table(name = "tipo_servicio")
-public class TipoServicio {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TipoServicioDto {
     private Long id;
     private String nombre;
     private Long estado;
 
-    public TipoServicio() {
+    public TipoServicioDto() {
     }
 
-    public TipoServicio(Long id, String nombre, Long estado) {
-        this.id = id;
-        this.nombre = nombre;
-        this.estado = estado;
+    public TipoServicioDto(TipoServicio tipoServicio) {
+        this.id = tipoServicio.getId();
+        this.nombre = tipoServicio.getNombre();
+        this.estado = tipoServicio.getEstado();
     }
 
     public Long getId() {

@@ -17,7 +17,6 @@ public class ServicioCrudRepositoryImpl implements CrudRepository<Servicio> {
     @Override
     public List<Servicio> listar() throws SQLException {
         return em.createQuery("SELECT s FROM Servicio s", Servicio.class).getResultList();
-        //String sql = "SELECT s.*, TRUNCATE(s.precio, 2) AS precio, t.nombre AS nombre_tipo_servicio, t.descripcion AS descripcion_tipo_servicio, t.estado AS estado_tipo_servicio FROM servicio s INNER JOIN tipo_servicio t ON s.tipo = t.id";
     }
 
     @Override

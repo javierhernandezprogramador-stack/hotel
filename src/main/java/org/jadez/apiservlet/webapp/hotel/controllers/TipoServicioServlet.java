@@ -68,7 +68,6 @@ public class TipoServicioServlet extends HttpServlet {
         tipoServicio.setId(id);
         tipoServicio.setNombre(nombre);
         tipoServicio.setEstado(1L);
-        tipoServicio.setDescripcion(descripcion);
         return tipoServicio;
     }
 
