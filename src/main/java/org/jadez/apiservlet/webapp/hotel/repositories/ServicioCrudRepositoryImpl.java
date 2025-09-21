@@ -39,8 +39,8 @@ public class ServicioCrudRepositoryImpl implements CrudRepository<Servicio> {
     @Override
     public void updateEstado(Long id, Long estado) throws SQLException {
         em.createQuery("UPDATE Servicio s SET s.estado = :estado WHERE s.id = :id")
-                .setParameter(":estado", estado)
-                .setParameter(":id", id)
+                .setParameter("estado", estado)
+                .setParameter("id", id)
                 .executeUpdate();
     }
 }

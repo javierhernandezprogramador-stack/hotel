@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.jadez.apiservlet.webapp.hotel.dto.EstadoDto;
 import org.jadez.apiservlet.webapp.hotel.dto.ServicioDto;
+import org.jadez.apiservlet.webapp.hotel.dto.mapper.ServicioMapper;
 import org.jadez.apiservlet.webapp.hotel.entity.Servicio;
 import org.jadez.apiservlet.webapp.hotel.entity.TipoServicio;
 import org.jadez.apiservlet.webapp.hotel.services.CrudService;
@@ -25,12 +26,13 @@ public class ServicioRestController {
     @Inject
     private CrudService<TipoServicio> tipoService;
 
+    @Inject
+    private ServicioMapper servicioMapper;
+
     @GET
     public List<ServicioDto> listar() {
         List<Servicio> servicios = service.listar();
-        List<ServicioDto> dtos = servicios.stream().map(ServicioDto::new).toList();
-
-        return dtos;
+        return servicios.stream().map(ServicioDto::new).toList();
     }
 
     @GET
@@ -38,7 +40,7 @@ public class ServicioRestController {
     public Response porId(@PathParam("id") Long id) {
         Optional<Servicio> optionalServicio = service.porId(id);
 
-        if(optionalServicio.isPresent()) {
+        if (optionalServicio.isPresent()) {
             ServicioDto dto = new ServicioDto(optionalServicio.get());
             return Response.ok(dto).build();
         }
@@ -50,11 +52,12 @@ public class ServicioRestController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response crear(ServicioDto servicioDto) {
         try {
-            Servicio servicio = convertirDTO(servicioDto);
+            Servicio servicio = servicioMapper.toEntity(servicioDto);
+            servicio.setTipoServicio(obtenerTipoServicio(servicioDto));
             service.crear(servicio);
             ServicioDto dto = new ServicioDto(servicio);
             return Response.ok(dto).build();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError().build();
         }
@@ -63,12 +66,14 @@ public class ServicioRestController {
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response editar(@PathParam("id") Long id, Servicio servicio) {
+    public Response editar(@PathParam("id") Long id, ServicioDto servicioDto) {
         Optional<Servicio> optionalServicio = service.porId(id);
 
-        if(optionalServicio.isPresent()) {
+        if (optionalServicio.isPresent()) {
             try {
-                Servicio nuevoServicio = new Servicio();
+                Servicio servicio = servicioMapper.toEntity(servicioDto);
+                servicio.setTipoServicio(obtenerTipoServicio(servicioDto));
+                Servicio nuevoServicio = optionalServicio.get();
                 nuevoServicio.setNombre(servicio.getNombre());
                 nuevoServicio.setDescripcion(servicio.getDescripcion());
                 nuevoServicio.setEstado(servicio.getEstado());
@@ -76,8 +81,9 @@ public class ServicioRestController {
                 nuevoServicio.setTipoServicio(servicio.getTipoServicio());
 
                 service.crear(nuevoServicio);
-                return Response.ok(nuevoServicio).build();
-            }catch (Exception e) {
+                ServicioDto dto = new ServicioDto(nuevoServicio);
+                return Response.ok(dto).build();
+            } catch (Exception e) {
                 e.printStackTrace();
                 return Response.serverError().build();
             }
@@ -92,11 +98,11 @@ public class ServicioRestController {
     public Response editarEstado(@PathParam("id") Long id, EstadoDto dto) {
         Optional<Servicio> optionalServicio = service.porId(id);
 
-        if(optionalServicio.isPresent()) {
+        if (optionalServicio.isPresent()) {
             try {
                 service.updateEstado(id, dto.getEstado());
                 return Response.status(Response.Status.OK).build();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return Response.serverError().build();
             }
@@ -105,21 +111,16 @@ public class ServicioRestController {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
-    private Servicio convertirDTO(ServicioDto dto) {
-        Servicio servicio = new Servicio();
-        servicio.setNombre(dto.getNombre());
-        servicio.setPrecio(dto.getPrecio());
-        servicio.setEstado(dto.getEstado());
-        servicio.setDescripcion(dto.getDescripcion());
+    private TipoServicio obtenerTipoServicio(ServicioDto dto) {
 
-        if(dto.getTipoServicioDto() != null) {
+        if (dto.getTipoServicioDto() != null) {
             Optional<TipoServicio> tipoServicioOptional = tipoService.porId(dto.getTipoServicioDto().getId());
 
-            if(tipoServicioOptional.isPresent()) {
-                servicio.setTipoServicio(tipoServicioOptional.get());
+            if (tipoServicioOptional.isPresent()) {
+                return tipoServicioOptional.get();
             }
         }
-        return servicio;
-    }
 
+        return null;
+    }
 }
