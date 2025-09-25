@@ -64,7 +64,6 @@ public class TipoHabitacionServlet extends HttpServlet {
         TipoHabitacion tipoHabitacion = new TipoHabitacion();
         tipoHabitacion.setId(id);
         tipoHabitacion.setNombre(nombre);
-        tipoHabitacion.setDescripcion(descripcion);
         tipoHabitacion.setEstado(1L);
         return tipoHabitacion;
     }

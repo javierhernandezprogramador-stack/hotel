@@ -38,9 +38,9 @@ public class TipoHabitacionCrudRepositoryImpl implements CrudRepository<TipoHabi
 
     @Override
     public void updateEstado(Long id, Long estado) throws SQLException {
-        em.createQuery("UPDATE TipoHabitacion t SET t.estado : estado WHERE t.id = :id")
-                .setParameter(":estado", estado)
-                .setParameter(":id", id)
+        em.createQuery("UPDATE TipoHabitacion t SET t.estado = :estado WHERE t.id = :id")
+                .setParameter("estado", estado)
+                .setParameter("id", id)
                 .executeUpdate();
     }
 }

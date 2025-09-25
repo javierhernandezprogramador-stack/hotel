@@ -1,24 +1,19 @@
-package org.jadez.apiservlet.webapp.hotel.entity;
+package org.jadez.apiservlet.webapp.hotel.dto;
 
-import jakarta.persistence.*;
+import org.jadez.apiservlet.webapp.hotel.entity.TipoHabitacion;
 
-@Entity
-@Table(name = "tipo_habitacion")
-public class TipoHabitacion {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TipoHabitacionDto {
     private Long id;
     private String nombre;
     private Long estado;
 
-    public TipoHabitacion() {
+    public TipoHabitacionDto() {
     }
 
-    public TipoHabitacion(Long id, String nombre, Long estado) {
-        this.id = id;
-        this.nombre = nombre;
-        this.estado = estado;
+    public TipoHabitacionDto(TipoHabitacion tipoHabitacion) {
+        this.id = tipoHabitacion.getId();
+        this.nombre = tipoHabitacion.getNombre();
+        this.estado = tipoHabitacion.getEstado();
     }
 
     public Long getId() {

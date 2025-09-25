@@ -63,12 +63,12 @@ public class TipoServicioRestController {
         Optional<TipoServicio> optionalTipoServicio = service.porId(id);
 
         if(optionalTipoServicio.isPresent()) {
-            TipoServicio tipoServicio = tipoServicioMapper.toEntity(tipoServicioDto);
-            TipoServicio nuevoTipoServicio = optionalTipoServicio.get();
-            nuevoTipoServicio.setNombre(tipoServicio.getNombre());
-            nuevoTipoServicio.setEstado(tipoServicio.getEstado());
 
             try {
+                TipoServicio tipoServicio = tipoServicioMapper.toEntity(tipoServicioDto);
+                TipoServicio nuevoTipoServicio = optionalTipoServicio.get();
+                nuevoTipoServicio.setNombre(tipoServicio.getNombre());
+                nuevoTipoServicio.setEstado(tipoServicio.getEstado());
                 service.crear(nuevoTipoServicio);
                 return Response.ok(tipoServicioMapper.toDto(nuevoTipoServicio)).build();
 
