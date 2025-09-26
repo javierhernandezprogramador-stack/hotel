@@ -16,12 +16,12 @@ import java.util.Optional;
 public class HabitacionCrudServiceImpl implements CrudService<Habitacion> {
     @Inject
     @RepositoryJpa
-    private CrudRepository<Habitacion> crudRepository;
+    private CrudRepository<Habitacion> repository;
 
     @Override
     public List<Habitacion> listar() {
         try {
-            return crudRepository.listar();
+            return repository.listar();
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -30,7 +30,7 @@ public class HabitacionCrudServiceImpl implements CrudService<Habitacion> {
     @Override
     public Habitacion crear(Habitacion habitacion) {
         try {
-            return crudRepository.crear(habitacion);
+            return repository.crear(habitacion);
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -38,7 +38,11 @@ public class HabitacionCrudServiceImpl implements CrudService<Habitacion> {
 
     @Override
     public Optional<Habitacion> porId(Long id) {
-        return Optional.empty();
+        try {
+            return Optional.ofNullable(repository.porId(id));
+        } catch (SQLException e) {
+            throw new ServiceException(e.getMessage(), e.getCause());
+        }
     }
 
     @Override
