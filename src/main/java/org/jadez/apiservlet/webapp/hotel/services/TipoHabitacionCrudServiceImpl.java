@@ -17,12 +17,12 @@ public class TipoHabitacionCrudServiceImpl implements CrudService<TipoHabitacion
 
     @Inject
     @RepositoryJpa
-    private CrudRepository<TipoHabitacion> crudRepository;
+    private CrudRepository<TipoHabitacion> repository;
 
     @Override
     public List<TipoHabitacion> listar() {
         try {
-            return crudRepository.listar();
+            return repository.listar();
         }catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -31,7 +31,7 @@ public class TipoHabitacionCrudServiceImpl implements CrudService<TipoHabitacion
     @Override
     public TipoHabitacion crear(TipoHabitacion tipoHabitacion) {
         try {
-            return crudRepository.crear(tipoHabitacion);
+            return repository.crear(tipoHabitacion);
         }catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -40,7 +40,7 @@ public class TipoHabitacionCrudServiceImpl implements CrudService<TipoHabitacion
     @Override
     public Optional<TipoHabitacion> porId(Long id) {
         try {
-            return Optional.ofNullable(crudRepository.porId(id));
+            return Optional.ofNullable(repository.porId(id));
         }catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -49,7 +49,7 @@ public class TipoHabitacionCrudServiceImpl implements CrudService<TipoHabitacion
     @Override
     public void updateEstado(Long id, Long estado) {
         try {
-            crudRepository.updateEstado(id, estado);
+            repository.updateEstado(id, estado);
         }catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }

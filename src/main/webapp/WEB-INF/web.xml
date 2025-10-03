@@ -5,7 +5,7 @@
                              https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
-    <context-param>
+    <!--<context-param>
         <param-name>upload.path</param-name>
         <param-value>C:/imagenes/</param-value>
     </context-param>
@@ -27,6 +27,6 @@
     <servlet-mapping>
         <servlet-name>jakarta.ws.rs.core.Application</servlet-name>
         <url-pattern>/api/*</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
 
 </web-app>

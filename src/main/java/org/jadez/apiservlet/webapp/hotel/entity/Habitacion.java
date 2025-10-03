@@ -20,7 +20,6 @@ public class Habitacion {
     private String piso;
     private Integer cama;
     private Integer bw;
-    private String imagen;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private TipoHabitacion tipoHabitacion;
@@ -80,14 +79,6 @@ public class Habitacion {
 
     public void setPiso(String piso) {
         this.piso = piso;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
     }
 
     public TipoHabitacion getTipoHabitacion() {

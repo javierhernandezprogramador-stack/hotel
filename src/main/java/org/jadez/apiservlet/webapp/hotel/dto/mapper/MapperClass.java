@@ -37,8 +37,10 @@ public class MapperClass {
     }
 
     //Mappear TipoHabitacionDTO a TipoHabitacion
-    public TipoHabitacion obtenerTipoHabitacion(TipoHabitacionDto habitacionDto) {
-        Optional<TipoHabitacion> optionalTipoHabitacion = tipoHabitacionService.porId(habitacionDto.getId());
+    public TipoHabitacion obtenerTipoHabitacion(TipoHabitacionDto tipoHabitacionDto) {
+        Long id = tipoHabitacionDto.getId();
+        Optional<TipoHabitacion> optionalTipoHabitacion = tipoHabitacionService.porId(id);
+
 
         if(optionalTipoHabitacion.isPresent()) {
             return optionalTipoHabitacion.get();

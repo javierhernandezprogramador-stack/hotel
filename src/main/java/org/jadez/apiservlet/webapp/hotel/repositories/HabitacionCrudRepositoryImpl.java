@@ -4,13 +4,14 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import org.jadez.apiservlet.webapp.hotel.config.Repository;
 import org.jadez.apiservlet.webapp.hotel.entity.Habitacion;
+import org.jadez.apiservlet.webapp.hotel.entity.Image;
 
 import java.sql.*;
 import java.util.List;
 
 @RepositoryJpa
 @Repository
-public class HabitacionCrudRepositoryImpl implements CrudRepository<Habitacion> {
+public class HabitacionCrudRepositoryImpl implements CrudRepositoryImage<Habitacion> {
 
     @Inject
     private EntityManager em;
@@ -44,4 +45,18 @@ public class HabitacionCrudRepositoryImpl implements CrudRepository<Habitacion> 
                 .setParameter("id", id)
                 .executeUpdate();
     }
+
+    @Override
+    public Image addImagen(Image image) {
+        em.persist(image);
+        return image;
+    }
+
+    @Override
+    public void deleteImage(Long id, Image image) {
+        em.createQuery("DELETE FROM Image i WHERE i.nombre = :nombre")
+                .setParameter("nombre", image.getNombre())
+                .executeUpdate();
+    }
+
 }
