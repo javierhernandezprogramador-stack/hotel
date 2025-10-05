@@ -64,8 +64,16 @@ public class ClienteCrudServiceImpl implements CrudService<Cliente> {
 
     @Override
     public void updateEstado(Long id, Long estado) {//aqui necesito mandar el objeto
+
         try {
             crudRepositoryCliente.updateEstado(id, estado);
+            Optional<Cliente> optionalCliente = this.porId(id);
+
+            if(optionalCliente.isPresent()) {
+                Cliente cliente = optionalCliente.get();
+                repositoryUsuario.updateEstado(cliente.getUsuario().getId(), estado);
+            }
+
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }

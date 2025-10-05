@@ -66,6 +66,13 @@ public class EmpleadoCrudServiceImpl implements CrudService<Empleado> {
     public void updateEstado(Long id, Long estado) {//aqui necesito mandar el objeto
         try {
             crudRepositoryEmpleado.updateEstado(id, estado);
+            Optional<Empleado> optionalEmpleado = this.porId(id);
+
+            if(optionalEmpleado.isPresent()) {
+                Empleado empleado = optionalEmpleado.get();
+                repositoryUsuario.updateEstado(empleado.getUsuario().getId(), estado);
+            }
+
         } catch (SQLException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
